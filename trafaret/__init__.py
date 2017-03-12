@@ -32,6 +32,16 @@ def _dd(value):
         return repr(value)
     return r"{%s}" % ', '.join("%r: %s" % (x[0], _dd(x[1])) for x in sorted(value.items(), key=lambda x: x[0]))
 
+def _issubclasspartial(fn, cls):
+    while True:
+        parent = fn
+        fn = getattr(parent, 'func', None)
+
+        if fn is None:
+            break
+
+    return issubclass(parent, cls)
+
 """
 Trafaret is tiny library for data validation
 It provides several primitives to validate complex data structures
@@ -169,7 +179,7 @@ class Trafaret(object):
         """
         if isinstance(trafaret, Trafaret) or inspect.isroutine(trafaret):
             return trafaret
-        elif issubclass(trafaret, Trafaret):
+        elif _issubclasspartial(trafaret, Trafaret):
             return trafaret()
         elif isinstance(trafaret, type):
             return Type(trafaret)
