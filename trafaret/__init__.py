@@ -1270,7 +1270,10 @@ class Call(Trafaret):
     def __init__(self, fn):
         if not callable(fn):
             raise RuntimeError("Call argument should be callable")
-        argspec = inspect.getargspec(fn)
+        if py3:
+            argspec = inspect.getfullargspec(fn)
+        else:
+            argspec = inspect.getargspec(fn)
         if len(argspec.args) - len(argspec.defaults or []) > 1:
             raise RuntimeError("Call argument should be"
                                " one argument function")
@@ -1387,7 +1390,10 @@ def guard(trafaret=None, **kwargs):
         trafaret = Dict(**kwargs)
 
     def wrapper(fn):
-        argspec = inspect.getargspec(fn)
+        if py3:
+            argspec = inspect.getfullargspec(fn)
+        else:
+            argspec = inspect.getargspec(fn)
 
         @functools.wraps(fn)
         def decor(*args, **kwargs):
