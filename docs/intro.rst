@@ -40,7 +40,7 @@ Some way you can use all re.Match power to extract from strings dicts and so on.
 functools.partial
 .................
 
-You can use ``functools.partial`` with Trafaret subclasses::
+You can use ``functools.partial`` with trafaret::
 
     >>> Word = functools.partial(t.String, regex=r'^[a-zA-Z]+$')
     >>> ShortWord = functools.partial(Word, min_length=3, max_length=5)
