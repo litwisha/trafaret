@@ -710,7 +710,8 @@ class TestPartialTrafaret(unittest.TestCase):
 
     def test_wrong_partial(self):
         trafaret = partial(
-            lambda min_length: t.String(min_length=min_length),
+            lambda min_length: min_length,
+            min_length=2,
         )
         with self.assertRaises(TypeError):
             trafaret = t.Dict({
